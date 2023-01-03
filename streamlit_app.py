@@ -3,15 +3,16 @@ import altair as alt
 import math
 import pandas as pd
 import streamlit as st
-import selenium as sl
+
 
 
 # SETUP
 
 #setup the webscrapping
 
+pip install selenium
+pip install webdriver-manager
 from webdriver_manager.chrome import ChromeDriverManager 
-import pandas as pd
 import time
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager 
