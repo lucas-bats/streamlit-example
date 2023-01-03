@@ -4,7 +4,7 @@ import math
 import pandas as pd
 import streamlit as st
 import selenium as sl
-import webdriver-manager as wm
+
 
 # SETUP
 
