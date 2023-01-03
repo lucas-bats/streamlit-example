@@ -3,36 +3,94 @@ import altair as alt
 import math
 import pandas as pd
 import streamlit as st
+import selenium as sl
+import webdriver-manager as wm
 
-"""
-# Welcome to Streamlit!
+# SETUP
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+#setup the webscrapping
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+from webdriver_manager.chrome import ChromeDriverManager 
+import pandas as pd
+import time
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager 
+driver = webdriver.Chrome(ChromeDriverManager().install())
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+```
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+
+```python
+#going to the page with all the pokemon names
+page_url = "https://pokemondb.net/pokedex/national"
+driver.get(page_url)
+```
 
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+```python
+#getting the name of the pokemon
+pokemonName = driver.find_elements(By.CLASS_NAME, 'ent-name')
+```
 
-    Point = namedtuple('Point', 'x y')
-    data = []
 
-    points_per_turn = total_points / num_turns
+```python
+#filling a list with the name and URL of each Pokemon
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
+pokemon = []
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+for apelido in pokemonName:
+    pkmn_url = apelido.get_attribute('href')
+    NomePkmn = apelido.text
+    pokemon.append({'Nome Pokemon': NomePkmn, 'Link': pkmn_url})
+```
+
+
+```python
+pokemon
+```
+
+
+```python
+#Going through the first list and retrieving the Total Base Power of each Pokemon
+
+lista_base = []
+
+for pkmn in pokemon:
+    driver.get(pkmn['Link'])
+    time.sleep(0.5)
+    elementos = driver.find_elements(By.CLASS_NAME, "cell-total")
+    
+    for elem in elementos:
+        lista_base.append({'Total':elem.text})
+```
+
+
+```python
+lista_base
+```
+
+
+```python
+dfBase = pd.DataFrame(lista_base)
+```
+
+
+```python
+dfBase
+```
+
+
+```python
+dfPokemon = pd.DataFrame(pokemon)
+```
+
+
+```python
+dfPokemon
+```
+
+
+```python
+
+```
