@@ -10,8 +10,6 @@ import streamlit as st
 
 #setup the webscrapping
 
-install selenium
-install webdriver-manager
 from webdriver_manager.chrome import ChromeDriverManager 
 import time
 from selenium import webdriver
